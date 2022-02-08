@@ -1,31 +1,93 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Table, Row, Col, Spinner } from "react-bootstrap";
 import styles from "./Info.module.css";
+import ErrorScreen from "../ErrorScreen/ErrorScreen";
+
+const validation = (string) => {
+  console.log("test: ", /^([0-9]*)$/i.test(string));
+  return /^([0-9]*)$/i.test(string);
+};
 
 const Info = (props) => {
-  if (props.loading) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const { blockNumber } = useParams();
+  let hexString;
+
+  console.log("blockNurwfergmber", blockNumber);
+
+  if (!blockNumber || blockNumber === "latest") {
+    hexString = "latest";
+  } else if (!validation(blockNumber)) {
+    hexString = "-1"
+  } else {
+    hexString = "0x" + parseInt(blockNumber).toString(16);
+  }
+
+  console.log(hexString);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      new Request("https://cloudflare-eth.com", {
+        method: "POST",
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "eth_getBlockByNumber",
+          params: [hexString, true],
+          id: 64,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    )
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((res) => {
+        setData(res.result);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false);
+      });
+  }, [blockNumber]);
+
+  console.log(data);
+
+  if (loading) {
     return (
       <div className={styles.loading}>
         <Spinner animation="border" role="status" />
         <p>Please, wait. Info is loading</p>
       </div>
     );
+  } else if (!data || error) {
+    return <ErrorScreen />;
   } else {
     return (
       <div className={styles.wrapper}>
         <Row>
           <p>
-            <b>Block number: </b> {props.number}
+            <b>Block number: </b> {data.number}
           </p>
         </Row>
         <Row>
           <p>
-            <b>Block hash: </b> {props.hash}
+            <b>Block hash: </b> {data.hash}
           </p>
         </Row>
 
         <Row>
-          {props.transactions.length == 0 ? (
+          {data.transactions.length == 0 ? (
             <p>
               <b>There is no transactions or this block</b>
             </p>
@@ -46,7 +108,7 @@ const Info = (props) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {props.transactions.map((row) => {
+                    {data.transactions.map((row) => {
                       return (
                         <tr className={styles.row}>
                           <td>{row.from}</td>

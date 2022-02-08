@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import styles from "./Header.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
   const [blockNumber, setBlockNumber] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
 
+  let navigate = useNavigate();
+
   const validation = (string) => {
-    console.log("test: ", /^([1-9]*)$/i.test(string));
-    return /^([1-9]*)$/i.test(string);
+    console.log("test: ", /^([0-9]*)$/i.test(string));
+    return /^([0-9]*)$/i.test(string);
   };
 
   return (
@@ -34,7 +37,7 @@ const Header = (props) => {
                 className={"w-100"}
                 onClick={() => {
                   if (validation(blockNumber)) {
-                    props.handleSearch(parseInt(blockNumber));
+                    navigate(`/block/${blockNumber}`, { replace: false });
                     setIsInvalid(false);
                   } else {
                     setIsInvalid(true);
