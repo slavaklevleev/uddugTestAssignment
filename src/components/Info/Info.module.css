@@ -1,4 +1,26 @@
 .wrapper {
-    width: 80%;
-    margin: auto;
+  width: 80%;
+  margin: auto;
+}
+
+.wrapper p {
+  word-wrap: break-word;
+}
+
+.row {
+  font-size: 14px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: row;
+
+  margin: auto;
+  width: fit-content;
+  align-items: center;
+}
+
+.loading p {
+    font-size: 20px;
+  margin: 0px 10px;
 }
