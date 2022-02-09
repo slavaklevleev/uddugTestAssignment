@@ -5,7 +5,6 @@ import styles from "./Info.module.css";
 import ErrorScreen from "../ErrorScreen/ErrorScreen";
 
 const validation = (string) => {
-  console.log("test: ", /^([0-9]*)$/i.test(string));
   return /^([0-9]*)$/i.test(string);
 };
 
@@ -17,8 +16,6 @@ const Info = (props) => {
   const { blockNumber } = useParams();
   let hexString = "";
 
-  console.log("--------Info", blockNumber);
-
   if (!blockNumber || blockNumber === "latest") {
     hexString = "latest";
   } else if (!validation(blockNumber)) {
@@ -26,8 +23,6 @@ const Info = (props) => {
   } else {
     hexString = "0x" + parseInt(blockNumber).toString(16);
   }
-
-  console.log(hexString);
 
   useEffect(() => {
     setLoading(true);
@@ -56,19 +51,16 @@ const Info = (props) => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(error)
         setError(true);
         setLoading(false);
       });
   }, [hexString]);
 
-  console.log(data);
-
   if (loading) {
     return (
       <div className={styles.loading}>
         <Spinner animation="border" role="status" />
-        <p>Please, wait. Info is loading</p>
+        <p>Please, wait. Information is loading</p>
       </div>
     );
   } else if (!data || error) {
@@ -78,7 +70,7 @@ const Info = (props) => {
       <div className={styles.wrapper}>
         <Row>
           <p>
-            <b>Block number: </b> {data.number}
+            <b>Block number: </b> {`${parseInt(data.number,16)} (hex: ${data.number})` }
           </p>
         </Row>
         <Row>

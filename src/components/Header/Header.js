@@ -6,12 +6,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const Header = (props) => {
   const [blockNum, setBlockNum] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
-  const [isLatest, setIsLatest] = useState(false);
 
   const { blockNumber } = useParams();
   let navigate = useNavigate();
-
-  console.log("--------Header", blockNumber);
 
   useEffect(() => {
     if (blockNumber == "latest") {
@@ -20,7 +17,6 @@ const Header = (props) => {
   }, [blockNumber]);
 
   const validation = (string) => {
-    console.log("test: ", /^([0-9]*)$/i.test(string));
     return /^([0-9]*)$/i.test(string);
   };
 
@@ -36,10 +32,10 @@ const Header = (props) => {
               <Form.Control
                 isInvalid={isInvalid}
                 type="text"
-                placeholder="Search by number"
+                placeholder="Search by block number"
                 size="sm"
                 onChange={(event) => setBlockNum(event.target.value)}
-                value={isLatest ? "" : blockNum}
+                value={blockNum}
               />
             </Col>
             <Col xs={4} md={3}>
