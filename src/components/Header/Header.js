@@ -23,12 +23,12 @@ const Header = (props) => {
   return (
     <div className={styles.header}>
       <Row className="align-items-center">
-        <Col md={6}>
+        <Col md={5}>
           <p>Uddug Test Assignment</p>
         </Col>
-        <Col md={6}>
+        <Col md={7}>
           <Row className="align-items-center">
-            <Col xs={8} md={9}>
+            <Col xs={6} md={6} lg={7}>
               <Form.Control
                 isInvalid={isInvalid}
                 type="text"
@@ -38,7 +38,7 @@ const Header = (props) => {
                 value={blockNum}
               />
             </Col>
-            <Col xs={4} md={3}>
+            <Col xs={6} md={6} lg={5}>
               <Button
                 className={"w-100"}
                 onClick={() => {
@@ -50,7 +50,7 @@ const Header = (props) => {
                   }
                 }}
               >
-                Search
+                Search or display latest
               </Button>
             </Col>
           </Row>
