@@ -6,32 +6,23 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Redirect,
   Navigate,
-  Link,
-  useRouteMatch,
-  useParams,
-  useNavigate,
 } from "react-router-dom";
+import Layout from "./components/Layout";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <>
-        <Header handleSearch={this.handleSearch} />
-
-        <Routes>
+const App = (props) => {
+  return (
+    <>
+      <Routes>
+        <Route path="*" element={<Navigate to="/block" />} />
+        <Route path="/block" element={<Layout />}>
           <Route path="/block/:blockNumber" element={<Info />} />
           <Route path="/block" element={<Info />} />
-          <Route path="*" element={<Navigate to="/block" />} />
-        </Routes>
-      </>
-    );
-  }
-}
+        </Route>
+        
+      </Routes>
+    </>
+  );
+};
 
 export default App;

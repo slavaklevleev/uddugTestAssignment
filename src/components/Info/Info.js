@@ -15,9 +15,9 @@ const Info = (props) => {
   const [error, setError] = useState(false);
 
   const { blockNumber } = useParams();
-  let hexString;
+  let hexString = "";
 
-  console.log("blockNurwfergmber", blockNumber);
+  console.log("--------Info", blockNumber);
 
   if (!blockNumber || blockNumber === "latest") {
     hexString = "latest";
@@ -56,10 +56,11 @@ const Info = (props) => {
         setLoading(false);
       })
       .catch((err) => {
+        console.log(error)
         setError(true);
         setLoading(false);
       });
-  }, [blockNumber]);
+  }, [hexString]);
 
   console.log(data);
 
